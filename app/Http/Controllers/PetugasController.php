@@ -55,6 +55,40 @@ class PetugasController extends Controller
         return response()->json(compact('user','token'),201);
     }
 
+    public function update($id, Request $req){
+      if(Auth::user()->level=="admin"){
+        $validator=Validator::make($req->all(), [
+          'nama_petugas' => 'required|string|max:255',
+          'alamat' => 'required|string|max:255',
+          'telp' => 'required|string|max:255',
+          'username' => 'required|string|max:255',
+          'password' => 'required',
+          'level' => 'required|string|max:255',
+        ]);
+
+        if($validator->fails()){
+          return response()->json($validator->errors());
+        }
+
+        $ubah = User::where('id', $id)->update([
+          'nama_petugas' => $request->get('nama_petugas'),
+          'alamat' => $request->get('alamat'),
+          'telp' => $request->get('telp'),
+          'username' => $request->get('username'),
+          'password' => Hash::make($request->get('password')),
+          'level' => $request->get('level'),
+        ]);
+
+        $status="1";
+        $messege="Berhasil mengupdate data detail petugas";
+
+        return response()->json(compact('status', 'messege'));
+
+      } else {
+        echo "Hanya admin yang bisa mengakses!";
+      }
+    }
+
     public function getAuthenticatedUser()
     {
         try {

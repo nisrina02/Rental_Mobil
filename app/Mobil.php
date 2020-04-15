@@ -1,0 +1,11 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Mobil extends Model
+{
+    protected $table = "data_mobil";
+    protected $primarykey = "id";
+}
